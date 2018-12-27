@@ -23,9 +23,16 @@ class Day04Test {
 [1518-11-05 00:45] falls asleep
 [1518-11-05 00:55] wakes up"""
     @Test
-    fun sleepyGuard() {
+    fun part01() {
         assertEquals(240, Day04(input.split("\n")).part01())
         val file = File("input/day04.txt")
         println(Day04(file.readLines()).part01())
+    }
+
+    @Test
+    fun part02() {
+        assertEquals(4455, Day04(input.split("\n")).part02())
+        val file = File("input/day04.txt")
+        println(Day04(file.readLines()).part02())
     }
 }

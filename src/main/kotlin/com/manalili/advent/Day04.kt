@@ -1,6 +1,6 @@
 package com.manalili.advent
 
-class Day04(val logs: List<String>){
+class Day04(private val logs: List<String>){
     private var guardList: List<Guard> = listOf()
         get(){
             val guardIdPattern = Regex("""\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2})] Guard #(\d+) begins shift""")
@@ -23,7 +23,6 @@ class Day04(val logs: List<String>){
                         event.contains("falls asleep") -> {
                             val sleep = isSleepingPattern.find(event)!!.destructured.component2()
                             guard.minutesAsleep.add(sleep.toInt())
-
                         }
                         event.contains("wakes up")-> {
                             val awake = isAwakePattern.find(event)!!.destructured.component2()
@@ -32,20 +31,37 @@ class Day04(val logs: List<String>){
                     }
                     if (i == (sortedLogs.size - 1)) guardList.add(guard)
                 }
-
         return guardList
-
     }
 
     fun part01() : Int{
+        //Get sleepiest guard by total duration asleep
         val sleepyGuard = guardList.groupingBy { it.id }.aggregate { _, acc: Int?, elem, _ ->
             (acc ?: 0) + elem.totalMinutesAsleep
         }.maxBy { it.value }?.key
 
-        return guardList.filter { it.id == sleepyGuard }
-            .flatMap { it.rangeAsleep }.groupingBy { it }.eachCount()
-            .maxBy { it.value }?.key!! * sleepyGuard!!
+        return mostAsleepMinuteMark(guardList.filter { it.id == sleepyGuard } ).first * sleepyGuard!!
     }
+
+    fun part02(): Int{
+        val result = guardList.filter { it.minutesAsleep.isNotEmpty() || it.minutesAwake.isNotEmpty() }
+            .groupBy { it.id }
+            .map { (key, value) ->
+                val (minuteMark, frequency) = mostAsleepMinuteMark(value)
+                Triple(key, minuteMark, frequency)
+            }
+            .maxBy { it.third}
+        return result!!.first!! * result.second
+    }
+}
+
+fun mostAsleepMinuteMark(list: List<Guard>): Pair<Int, Int>{
+
+    val asleep = list.flatMap { it.rangeAsleep }.groupingBy { it }
+        .eachCount()
+        .maxBy { it.value }
+
+    return asleep!!.key to asleep.value
 }
 
 data class Guard(
@@ -64,5 +80,3 @@ data class Guard(
             return minutesMark
         }
 }
-
-
