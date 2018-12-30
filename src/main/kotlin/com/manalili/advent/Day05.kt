@@ -1,8 +1,8 @@
 package com.manalili.advent
 
 class Day05(val input: String) {
-    fun react(): Int {
-        var polymer = input
+    fun react(polymerInput: String = input): Int {
+        var polymer = polymerInput
         var index = 0
 
         while (true) {
@@ -18,6 +18,14 @@ class Day05(val input: String) {
         return polymer.length
     }
 
+    fun fullyReact(): Int{
+        val units = input.toCharArray().distinctBy { it.toLowerCase() }
+
+        return units.map { testUnit ->  input.filterNot { testUnit.toLowerCase() == it || testUnit.toUpperCase() == it } }
+            .map { react(it) }
+            .min()!!
+    }
+
 
     private infix fun Char.same(other: Char) : Boolean {
         return when {
@@ -28,3 +36,4 @@ class Day05(val input: String) {
     }
 
 }
+

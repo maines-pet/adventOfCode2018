@@ -14,4 +14,12 @@ class Day05Test {
         val file = File("input/day05.txt")
         println(Day05(file.readText()).react())
     }
+
+    @Test
+    fun fullyReact() {
+        val sample = "dabAcCaCBAcCcaDA"
+        assertEquals("daDA".length, Day05(sample).fullyReact())
+        val file = File("input/day05.txt")
+        println(Day05(file.readText()).fullyReact())
+    }
 }
