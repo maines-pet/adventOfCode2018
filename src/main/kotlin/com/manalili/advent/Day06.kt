@@ -9,8 +9,6 @@ class Day06(val input: List<String>){
     var height: IntRange
     var width: IntRange
     init {
-        val alpha = generateAlphaStack()
-
         coordinates = input.map {
             val (x, y) = it.split(", ")
             ChronalCoordinate(x.toInt(), y.toInt())
@@ -21,35 +19,33 @@ class Day06(val input: List<String>){
     }
 
     fun largestArea(): Int {
-        val area = mutableMapOf<Pair<Int,Int>, ChronalCoordinate?>()
         for (i in height) {
             for (j in width) {
                 val coordinateList = coordinates.map { it to it.distance(j, i) }
                     .groupBy { it.second }
                     .minBy { it.key }
-                area[i to j] = if (coordinateList!!.value.size> 1) {
-                    null
-                } else {
+//                if (coordinateList!!.value.size> 1) {
+//                    null
+//                } else {
+//                    coordinateList.value.first().first.also { it.units++ }
+//                }
+
+                if (coordinateList!!.value.size == 1) {
                     coordinateList.value.first().first.also { it.units++ }
                 }
             }
         }
         return coordinates.filter { !it.isInfinite(height, width) }.maxBy { it.units }!!.units
-
     }
 
-    fun generateAlphaStack(): ArrayDeque<String> {
-        val a = CharRange('A', 'F')
-        val result = Stack<String>()
-        val result2 = ArrayDeque<String>()
-        for (alpha in a) {
-            result2.add(alpha.toString())
-            for (beta in a) {
-                result.push("""$alpha$beta""")
+    fun regionDistanceAcross(limit: Int): Int {
+        val area = mutableMapOf<Pair<Int, Int>, Int>()
+        for (i in height) {
+            for (j in width) {
+                area[i to j] = coordinates.sumBy { it.distance(j, i) }
             }
         }
-
-        return result2
+        return area.filterValues { it <  limit}.count()
     }
 }
 

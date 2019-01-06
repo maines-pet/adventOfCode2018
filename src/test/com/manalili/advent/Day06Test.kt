@@ -21,4 +21,11 @@ class Day06Test {
         val inputFile = File("input/day06.txt")
         println(Day06(inputFile.readLines()).largestArea())
     }
+
+    @Test
+    fun regionDistanceAcross() {
+        assertEquals(16, Day06(input.split("\n")).regionDistanceAcross(32))
+        val inputFile = File("input/day06.txt")
+        println(Day06(inputFile.readLines()).regionDistanceAcross(10000))
+    }
 }
