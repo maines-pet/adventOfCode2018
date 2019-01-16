@@ -1,8 +1,6 @@
 package com.manalili.advent
 
-import java.util.*
 import kotlin.math.abs
-
 
 class Day06(val input: List<String>){
     var coordinates: List<ChronalCoordinate>
@@ -24,11 +22,6 @@ class Day06(val input: List<String>){
                 val coordinateList = coordinates.map { it to it.distance(j, i) }
                     .groupBy { it.second }
                     .minBy { it.key }
-//                if (coordinateList!!.value.size> 1) {
-//                    null
-//                } else {
-//                    coordinateList.value.first().first.also { it.units++ }
-//                }
 
                 if (coordinateList!!.value.size == 1) {
                     coordinateList.value.first().first.also { it.units++ }
