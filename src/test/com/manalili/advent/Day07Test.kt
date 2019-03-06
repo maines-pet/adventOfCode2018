@@ -24,6 +24,8 @@ Step F must be finished before step E can begin.""".trim()
     }
 
     @Test
-    fun regionDistanceAcross() {
+    fun part2() {
+        val inputFile = File("input/day07.txt")
+        println(Day07(inputFile.readLines()).part2())
     }
 }
